@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>820RR vs YZF-R9 · 终极参数对决</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0a0a0a;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* ── 滚动动画 ── */
+.reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left { opacity: 0; transform: translateX(-60px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right { opacity: 0; transform: translateX(60px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #0a0a1a;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 60%, #1a0a2e 0%, #0a0a0a 100%);
+  z-index: 0;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  animation: gridPulse 4s ease-in-out infinite;
+}
+@keyframes gridPulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 40px 24px;
+}
+.hero-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border: 1px solid rgba(255,80,80,0.5);
+  border-radius: 20px;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #ff6060;
+  margin-bottom: 24px;
+  font-weight: 700;
+  animation: fadeUp 1s 0.2s both;
+}
+.hero-title {
+  font-size: clamp(48px, 12vw, 120px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  animation: fadeUp 1s 0.4s both;
+}
+.hero-title .vs {
+  display: block;
+  font-size: clamp(20px, 5vw, 48px);
+  font-weight: 300;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 12px;
+  margin: 12px 0;
+}
+.hero-title .r { color: #e03030; }
+.hero-title .b { color: #1a6fd4; }
+.hero-sub {
+  margin-top: 24px;
+  font-size: clamp(13px, 2.5vw, 17px);
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 3px;
+  animation: fadeUp 1s 0.6s both;
+}
+.hero-prices {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  animation: fadeUp 1s 0.8s both;
+}
+.hero-price-tag {
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid;
+}
+.tag-red { background: rgba(224,48,48,0.12); color: #ff6060; border-color: rgba(224,48,48,0.3); }
+.tag-blue { background: rgba(26,111,212,0.12); color: #60a0ff; border-color: rgba(26,111,212,0.3); }
+.scroll-hint {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: bounce 2s ease-in-out infinite;
+}
+.scroll-hint span { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 3px; }
+.scroll-arrow {
+  width: 18px; height: 18px;
+  border-right: 2px solid rgba(255,255,255,0.2);
+  border-bottom: 2px solid rgba(255,255,255,0.2);
+  transform: rotate(45deg);
+}
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 视差分隔线 ── */
+.parallax-divider {
+  height: 40vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+}
+.parallax-bg {
+  position: absolute; inset: -20%;
+  will-change: transform;
+}
+.pd1 .parallax-bg { background: radial-gradient(ellipse at center, rgba(224,48,48,0.12) 0%, #0a0a0a 100%); }
+.pd2 .parallax-bg { background: radial-gradient(ellipse at center, rgba(26,111,212,0.12) 0%, #0a0a0a 100%); }
+.parallax-text {
+  position: relative; z-index: 2;
+  font-size: clamp(40px, 8vw, 96px);
+  font-weight: 900;
+  opacity: 0.06;
+  letter-spacing: -2px;
+  white-space: nowrap;
+  user-select: none;
+}
+.pd1 .parallax-text { color: #e03030; }
+.pd2 .parallax-text { color: #1a6fd4; }
+
+/* ── 车型介绍 ── */
+.bike-section {
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+.bike-bg {
+  position: absolute; inset: 0;
+  will-change: transform;
+  transition: transform 0.05s linear;
+}
+.bike-section.red .bike-bg { background: linear-gradient(135deg, #1a0808 0%, #0a0a0a 100%); }
+.bike-section.blue .bike-bg { background: linear-gradient(135deg, #080818 0%, #0a0a0a 100%); }
+.bike-inner {
+  position: relative; z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .bike-inner { grid-template-columns: 1fr; padding: 48px 20px; gap: 28px; }
+  .bike-name { font-size: clamp(40px, 12vw, 60px); }
+  .compare-section { padding: 60px 16px; }
+  .compare-item { padding: 20px 16px; }
+  .features-section { padding: 60px 16px; }
+  .feature-card { padding: 20px; }
+  .footer-section { padding: 60px 20px; }
+  .hero-prices { gap: 10px; }
+  .hero-price-tag { font-size: 12px; padding: 8px 14px; }
+}
+.bike-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bike-photo {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+@media (max-width: 768px) {
+  .bike-photo { max-width: 100%; }
+}
+.bike-photo.visible { opacity: 1; transform: scale(1); }
+.bike-info { }
+.bike-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.bike-name {
+  font-size: clamp(36px, 7vw, 72px);
+  font-weight: 900;
+  line-height: 1;
+}
+.bike-section.red .bike-name { color: #e03030; }
+.bike-section.blue .bike-name { color: #1a6fd4; }
+.bike-desc {
+  font-size: 15px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+.spec-list { margin-top: 36px; display: flex; flex-direction: column; gap: 16px; }
+.spec-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.spec-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+.spec-value { font-size: clamp(22px, 4vw, 38px); font-weight: 700; }
+.bike-section.red .spec-value { color: #ff8080; }
+.bike-section.blue .spec-value { color: #70d4ff; }
+.spec-unit { font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 400; }
+.spec-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-left: auto; }
+.bike-price-highlight {
+  margin-top: 32px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  text-align: center;
+}
+.bike-section.red .bike-price-highlight { background: rgba(224,48,48,0.08); border: 1px solid rgba(224,48,48,0.2); }
+.bike-section.blue .bike-price-highlight { background: rgba(26,111,212,0.08); border: 1px solid rgba(26,111,212,0.2); }
+.bike-price-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+.bike-price-num { font-size: clamp(28px, 6vw, 48px); font-weight: 900; }
+.bike-section.red .bike-price-num { color: #e03030; }
+.bike-section.blue .bike-price-num { color: #1a6fd4; }
+.bike-price-sub { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+/* ── 参数对比 ── */
+.compare-section {
+  padding: 100px 40px;
+  position: relative;
+  background: #12121e;
+  min-width: 100%;
+}
+.compare-header { text-align: center; margin-bottom: 64px; }
+.compare-header h2 { font-size: clamp(28px, 5vw, 52px); font-weight: 900; color: #ffffff; }
+.compare-header p { color: rgba(255,255,255,0.4); margin-top: 12px; font-size: 15px; }
+.compare-grid { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+.compare-item {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 28px 32px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.compare-item-title {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.compare-bars { display: grid; grid-template-columns: 1fr 100px 1fr; gap: 20px; align-items: center; }
+@media (max-width: 600px) { .compare-bars { grid-template-columns: 1fr; gap: 12px; } }
+.bar-side { display: flex; flex-direction: column; gap: 6px; }
+.bar-side.yamaha { align-items: flex-end; }
+.bar-brand { font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+.bar-brand.red { color: #e03030; }
+.bar-brand.blue { color: #1a6fd4; }
+.bar-num { font-size: clamp(18px, 3vw, 28px); font-weight: 900; }
+.bar-num.red { color: #e03030; }
+.bar-num.blue { color: #1a6fd4; }
+.bar-num-sub { font-size: 11px; color: #bbb; font-weight: 400; }
+.bar-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.4s cubic-bezier(0.4,0,0.2,1); }
+.bar-fill.red { background: linear-gradient(90deg,#e03030,#ff7070); }
+.bar-fill.blue { background: linear-gradient(90deg,#70b4ff,#1a6fd4); }
+.vs-center { text-align: center; }
+.vs-circle {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.3);
+  margin: 0 auto;
+}
+.price-compare-note {
+  text-align: center;
+  margin-top: 40px;
+  padding: 16px 32px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.5);
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.price-compare-note strong { color: rgba(255,255,255,0.8); font-weight: 800; }
+
+/* ── 配置卡片 ── */
+.features-section { padding: 80px 40px; background: #0f0f1a; }
+.features-header { text-align: center; margin-bottom: 48px; }
+.features-header h2 { font-size: clamp(24px, 4vw, 44px); font-weight: 900; color: #ffffff; }
+.feature-cards { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+@media (max-width: 700px) { .feature-cards { grid-template-columns: 1fr; } }
+.feature-card {
+  padding: 28px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.feature-card.visible { opacity: 1; transform: translateY(0); }
+.feature-card.zx { background: rgba(255,255,255,0.04); border: 1px solid rgba(224,48,48,0.2); box-shadow: 0 4px 20px rgba(224,48,48,0.06); }
+.feature-card.ym { background: rgba(255,255,255,0.04); border: 1px solid rgba(26,111,212,0.2); box-shadow: 0 4px 20px rgba(26,111,212,0.06); }
+.feature-card-tip { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; font-weight: 800; }
+.feature-card.zx .feature-card-tip { color: #e03030; }
+.feature-card.ym .feature-card-tip { color: #1a6fd4; }
+.feature-card h3 { font-size: clamp(16px, 2.5vw, 22px); font-weight: 800; color: rgba(255,255,255,0.9); margin-bottom: 10px; }
+.feature-card p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+.spec-tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+.spec-tag { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.feature-card.zx .spec-tag { background: rgba(224,48,48,0.08); color: #e03030; }
+.feature-card.ym .spec-tag { background: rgba(26,111,212,0.08); color: #1a6fd4; }
+
+/* ── 结语 ── */
+.footer-section {
+  padding: 80px 40px;
+  text-align: center;
+  background: #0a0a1a;
+}
+.footer-title {
+  font-size: clamp(28px, 6vw, 52px);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.footer-title.visible { opacity: 1; transform: translateY(0); }
+.footer-body {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.9;
+  max-width: 480px;
+  margin: 0 auto 28px;
+}
+.footer-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 32px; }
+.winner-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 24px 0 32px; }
+.winner-tag { padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 1px; }
+.winner-tag.red { background: rgba(224,48,48,0.15); color: #ff8080; border: 1px solid rgba(224,48,48,0.3); }
+.winner-tag.blue { background: rgba(26,111,212,0.15); color: #70d4ff; border: 1px solid rgba(26,111,212,0.3); }
+.footer-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.footer-logo { width: 80px; height: auto; margin: 0 auto 16px; display: block; opacity: 0.7; }
+.footer-ai { font-size: 11px; color: rgba(255,255,255,0.2); margin-top: 12px; letter-spacing: 1px; }
+.footer-source { font-size: 11px; color: rgba(255,255,255,0.15); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge" style="">两款旗舰直三 · 终极参数对决</div>
+    <h1 class="hero-title" style="">
+      <span class="r">820RR</span>
+      <span class="vs">V S</span>
+      <span class="b">YZF-R9</span>
+    </h1>
+    <p class="hero-sub" style="">张雪旗舰直三 · 雅马哈中量级CP3 · 终极参数对决</p>
+    <div class="hero-prices" style="">
+      <div class="hero-price-tag tag-red">¥4.38万</div>
+      <div class="hero-price-tag tag-blue">JPY ¥149.6万</div>
+    </div>
+    <p style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:1px;animation:fadeUp 1s 1s both;">* R9 日本当地售价，进口引进后价格将大幅提升</p>
+  </div>
+  <div class="scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ═══ 820RR 车型介绍 ═══ -->
+<section class="bike-section red" id="zhangxue">
+  <div class="bike-bg" data-parallax="0.3" style="transform: translateY(328.145px);"></div>
+  <div class="bike-inner">
+    <div class="bike-visual reveal-left">
+      <img class="bike-photo" src="/imgs/zhangxue-820rr.png" alt="张雪820RR" data-delay="0">
+    </div>
+    <div class="bike-info">
+      <div class="bike-tagline">张雪机车 · 2026旗舰跑车</div>
+      <h2 class="bike-name reveal">820RR</h2>
+      <div class="bike-desc">国产运动旗舰 · 直列三缸 · 铝合金车架</div>
+      <div class="spec-list">
+        <div class="spec-row reveal">
+          <span class="spec-label">排量</span>
+          <span class="spec-value">818.8<span class="spec-unit">cc</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">最大功率</span>
+          <span class="spec-value">135<span class="spec-unit">PS / 12000rpm</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">最大扭矩</span>
+          <span class="spec-value">80<span class="spec-unit">N·m / 9500rpm</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">整备质量</span>
+          <span class="spec-value">193<span class="spec-unit">kg</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">座高</span>
+          <span class="spec-value">825<span class="spec-unit">mm</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">轴距</span>
+          <span class="spec-value">1400<span class="spec-unit">mm</span></span>
+        </div>
+      </div>
+      <div class="bike-price-highlight reveal">
+        <div class="bike-price-label">官方售价</div>
+        <div class="bike-price-num">¥43,800<span class="spec-unit"> 元</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 视差分隔线 1 ═══ -->
+<div class="parallax-divider pd1">
+  <div class="parallax-bg" data-parallax="0.5" style="transform: translateY(911.212px);"></div>
+  <div class="parallax-text">8 2 0 · R R · 2 0 2 6</div>
+</div>
+
+<!-- ═══ YZF-R9 车型介绍 ═══ -->
+<section class="bike-section blue" id="yamaha">
+  <div class="bike-bg" data-parallax="0.3" style="transform: translateY(768.291px);"></div>
+  <div class="bike-inner">
+    <div class="bike-visual reveal-right">
+      <img class="bike-photo" src="/imgs/yamaha-r9.png" alt="雅马哈YZF-R9" data-delay="100">
+    </div>
+    <div class="bike-info">
+      <div class="bike-tagline">Yamaha · CP3 中量级 SuperSport</div>
+      <h2 class="bike-name reveal">YZF-R9</h2>
+      <div class="bike-desc">CP3三缸引擎 · Deltabox车架 · 赛道基因</div>
+      <div class="spec-list">
+        <div class="spec-row reveal">
+          <span class="spec-label">排量</span>
+          <span class="spec-value">888<span class="spec-unit">cc</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">最大功率</span>
+          <span class="spec-value">120<span class="spec-unit">PS / 10000rpm</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">最大扭矩</span>
+          <span class="spec-value">93<span class="spec-unit">N·m / 7000rpm</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">整备质量</span>
+          <span class="spec-value">195<span class="spec-unit">kg</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">座高</span>
+          <span class="spec-value">830<span class="spec-unit">mm</span></span>
+        </div>
+        <div class="spec-row reveal">
+          <span class="spec-label">轴距</span>
+          <span class="spec-value">1420<span class="spec-unit">mm</span></span>
+        </div>
+      </div>
+      <div class="bike-price-highlight reveal">
+        <div class="bike-price-label">官方售价</div>
+        <div class="bike-price-num">JPY ¥1,496,000</div>
+        <div class="bike-price-sub">约合人民币 ¥64,412 元</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 视差分隔线 2 ═══ -->
+<div class="parallax-divider pd2">
+  <div class="parallax-bg" data-parallax="0.5" style="transform: translateY(1649.76px);"></div>
+  <div class="parallax-text">Y Z F · R 9 · C P 3</div>
+</div>
+
+<!-- ═══ 深色过渡条 ═══ -->
+<div style="height:60px;background:linear-gradient(180deg,#0a0a0a 0%,#12121e 100%);"></div>
+
+<!-- ═══ 核心参数对比 ═══ -->
+<section class="compare-section">
+  <div class="compare-header reveal">
+    <h2>⚡ 核心参数对比</h2>
+    <p>数据来源：张雪机车官网 · 雅马哈官网</p>
+  </div>
+  <div class="compare-grid">
+
+    <div class="compare-item reveal">
+      <div class="compare-item-title">最大功率</div>
+      <div class="compare-bars">
+        <div class="bar-side">
+          <span class="bar-brand red">820RR</span>
+          <span class="bar-num red">135<span class="bar-num-sub"> PS</span></span>
+          <div class="bar-track"><div class="bar-fill red" data-width="100"></div></div>
+        </div>
+        <div class="vs-center"><div class="vs-circle">VS</div></div>
+        <div class="bar-side yamaha">
+          <span class="bar-brand blue">YZF-R9</span>
+          <span class="bar-num blue">120<span class="bar-num-sub"> PS</span></span>
+          <div class="bar-track"><div class="bar-fill blue" data-width="89"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-item reveal">
+      <div class="compare-item-title">最大扭矩</div>
+      <div class="compare-bars">
+        <div class="bar-side">
+          <span class="bar-brand red">820RR</span>
+          <span class="bar-num red">80<span class="bar-num-sub"> N·m</span></span>
+          <div class="bar-track"><div class="bar-fill red" data-width="86"></div></div>
+        </div>
+        <div class="vs-center"><div class="vs-circle">VS</div></div>
+        <div class="bar-side yamaha">
+          <span class="bar-brand blue">YZF-R9</span>
+          <span class="bar-num blue">93<span class="bar-num-sub"> N·m</span></span>
+          <div class="bar-track"><div class="bar-fill blue" data-width="100"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-item reveal">
+      <div class="compare-item-title">排量</div>
+      <div class="compare-bars">
+        <div class="bar-side">
+          <span class="bar-brand red">820RR</span>
+          <span class="bar-num red">818.8<span class="bar-num-sub"> cc</span></span>
+          <div class="bar-track"><div class="bar-fill red" data-width="92"></div></div>
+        </div>
+        <div class="vs-center"><div class="vs-circle">VS</div></div>
+        <div class="bar-side yamaha">
+          <span class="bar-brand blue">YZF-R9</span>
+          <span class="bar-num blue">888<span class="bar-num-sub"> cc</span></span>
+          <div class="bar-track"><div class="bar-fill blue" data-width="100"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-item reveal">
+      <div class="compare-item-title">整备质量（轻量化）</div>
+      <div class="compare-bars">
+        <div class="bar-side">
+          <span class="bar-brand red">820RR</span>
+          <span class="bar-num red">193<span class="bar-num-sub"> kg ✓</span></span>
+          <div class="bar-track"><div class="bar-fill red" data-width="100"></div></div>
+        </div>
+        <div class="vs-center"><div class="vs-circle">VS</div></div>
+        <div class="bar-side yamaha">
+          <span class="bar-brand blue">YZF-R9</span>
+          <span class="bar-num blue">195<span class="bar-num-sub"> kg</span></span>
+          <div class="bar-track"><div class="bar-fill blue" data-width="99"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-item reveal">
+      <div class="compare-item-title">官方售价</div>
+      <div class="compare-bars">
+        <div class="bar-side">
+          <span class="bar-brand red">820RR</span>
+          <span class="bar-num red">¥43,800<span class="bar-num-sub"> 元</span></span>
+          <div class="bar-track"><div class="bar-fill red" data-width="100"></div></div>
+        </div>
+        <div class="vs-center"><div class="vs-circle">VS</div></div>
+        <div class="bar-side yamaha">
+          <span class="bar-brand blue">YZF-R9</span>
+          <span class="bar-num blue">JPY ¥1,496,000</span>
+          <div class="bar-track"><div class="bar-fill blue" data-width="3"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div style="text-align:center; margin-top:40px;">
+    <div class="price-compare-note reveal">
+      📌 R9 为日本当地售价，进口引进后含关税等费用将大幅高于此价格
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 配置差异 ── -->
+<section class="features-section">
+  <div class="features-header reveal">
+    <h2>配置亮点对比</h2>
+  </div>
+  <div class="feature-cards">
+
+    <div class="feature-card zx" data-delay="0">
+      <div class="feature-card-tip">820RR</div>
+      <h3>渝安减震 · TASIKO刹车 · 博世ABS</h3>
+      <p>渝安43mm倒置全可调前叉配外置气囊后减震；TASIKO四活塞320mm双碟前刹配合博世弯道ABS，电控配备5种骑行模式+胎压监测，配置丰富。</p>
+      <div class="spec-tags">
+        <span class="spec-tag">渝安43mm倒置前叉</span>
+        <span class="spec-tag">外置气囊后减震</span>
+        <span class="spec-tag">TASIKO四活塞</span>
+        <span class="spec-tag">320mm双碟</span>
+        <span class="spec-tag">博世弯道ABS</span>
+        <span class="spec-tag">IMU+TCS</span>
+        <span class="spec-tag">5种骑行模式</span>
+        <span class="spec-tag">胎压监测</span>
+      </div>
+    </div>
+
+    <div class="feature-card ym" data-delay="100">
+      <div class="feature-card-tip">YZF-R9</div>
+      <h3>KYB减震 · Brembo Stylema · YRC系统</h3>
+      <p>KYB世界首创微低速阀后避震配合43mm倒立前叉，调校功力深厚；Brembo Stylema四活塞径向卡钳兼顾轻量化与散热；YRC系统精准控制，Garmin导航+TRACK模式。</p>
+      <div class="spec-tags">
+        <span class="spec-tag">KYB 43mm倒置前叉</span>
+        <span class="spec-tag">KYB多连杆后减震</span>
+        <span class="spec-tag">Brembo Stylema</span>
+        <span class="spec-tag">320mm双碟</span>
+        <span class="spec-tag">弯道ABS</span>
+        <span class="spec-tag">IMU+TCS</span>
+        <span class="spec-tag">YRC系统</span>
+        <span class="spec-tag">Garmin导航</span>
+      </div>
+    </div>
+
+    <div class="feature-card zx" data-delay="200">
+      <div class="feature-card-tip">820RR</div>
+      <h3>铝合金双翼梁车架 · 更宽后轮</h3>
+      <p>铝合金双翼梁车架配铝合金后摇臂，操控刚性出色；后轮190/55ZR17比R9更宽，抓地力更强；15L油箱比R9多1L；滑动离合器减轻换挡顿挫。</p>
+      <div class="spec-tags">
+        <span class="spec-tag">铝合金双翼梁车架</span>
+        <span class="spec-tag">190/55ZR17后轮</span>
+        <span class="spec-tag">15L油箱</span>
+        <span class="spec-tag">滑动离合</span>
+        <span class="spec-tag">双向快排</span>
+        <span class="spec-tag">TFT全彩仪表</span>
+      </div>
+    </div>
+
+    <div class="feature-card ym" data-delay="300">
+      <div class="feature-card-tip">YZF-R9</div>
+      <h3>CP3三缸 · Deltabox车架 · 扭矩优势</h3>
+      <p>CP3发动机93N·m扭矩在7000rpm全数释放，无需拉高转即可享受推背感；Deltabox铝合金车架源自MotoGP技术传承；Y-Connect连接手机，赛道基因纯正。</p>
+      <div class="spec-tags">
+        <span class="spec-tag">CP3直列三缸</span>
+        <span class="spec-tag">93N·m扭矩</span>
+        <span class="spec-tag">Deltabox铝合金</span>
+        <span class="spec-tag">YCC-T电子油门</span>
+        <span class="spec-tag">Y-Connect</span>
+        <span class="spec-tag">TRACK模式</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ 深色过渡条 ═══ -->
+<div style="height:60px;background:linear-gradient(180deg,#0f0f1a 0%,#0a0a0a 100%);"></div>
+
+<!-- ═══ 结语 ═══ -->
+<section class="footer-section">
+  <div class="footer-title">🏁 没有输家，只有选择</div>
+  <div class="footer-body">
+    820RR 用一半的价格，交出了超越期待的答卷。<br>
+    R9 用雅马哈几十年的赛道积累，守护着 SuperSport 的尊严。<br>
+    选谁，都是正确的。
+  </div>
+  <div class="winner-tags">
+    <span class="winner-tag red">820RR · 性价比之王</span>
+    <span class="winner-tag blue">YZF-R9 · 底蕴之选</span>
+  </div>
+  <div class="footer-tags">
+    <span class="footer-tag">#820RR</span>
+    <span class="footer-tag">#YZFR9</span>
+    <span class="footer-tag">#张雪摩托</span>
+    <span class="footer-tag">#雅马哈</span>
+    <span class="footer-tag">#摩托车</span>
+    <span class="footer-tag">#机车RADAR</span>
+  </div>
+  <img class="footer-logo" src="/imgs/logo-black.png" alt="YOUNGROUP">
+  <div class="footer-ai">⚠️ 本文部分数据由 AI 辅助整理，请以官方最新信息为准</div>
+  <div class="footer-source">数据来源：张雪机车官网 · 雅马哈官网</div>
+</section>
+
+<script>
+// ── 视差滚动 ──
+(function() {
+  const parallaxElements = document.querySelectorAll('[data-parallax]');
+  function updateParallax() {
+    parallaxElements.forEach(el => {
+      const speed = parseFloat(el.dataset.parallax);
+      const rect = el.parentElement.getBoundingClientRect();
+      const centerOffset = (rect.top + rect.height / 2 - window.innerHeight / 2) * speed;
+      el.style.transform = 'translateY(' + centerOffset + 'px)';
+    });
+  }
+  window.addEventListener('scroll', updateParallax, { passive: true });
+  updateParallax();
+})();
+
+// ── 滚动淡入 ──
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+          // 进度条动画
+          entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+        }, Number(delay));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .feature-card, .footer-title, .bike-photo').forEach(el => {
+    observer.observe(el);
+  });
+})();
+
+// ── Hero 入场动画重播（刷新时）──
+(function() {
+  document.querySelectorAll('.hero-badge, .hero-title, .hero-sub, .hero-prices').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = null;
+  });
+})();
+</script>
+
+</body></html>
